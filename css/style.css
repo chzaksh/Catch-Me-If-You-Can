@@ -1,0 +1,104 @@
+.container {
+    width: 1140px;
+    margin: auto;
+}
+
+.start {
+    height: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border: black 1px solid;
+    font-size: 30px;
+    padding-top: 12px;
+}
+.start span{
+    color: #ec3f1f;
+}
+
+.screen {
+    position: relative;
+    background-color: black;
+    width: 70%;
+    height: 500px;
+    float: left;
+    border: brown 3px solid;
+    margin-right: 3%;
+}
+
+.details {
+    border: black 1px solid;
+    width: 25%;
+    float: left;
+    height: 500px;
+    float: right;
+    background-color: wheat;
+
+}
+
+.boxdetails {
+    background-color: #2a9aa594;
+    padding: 5px 0 0 5px;
+    width: 90%;
+    height: 60px;
+    border: springgreen 1px solid;
+    margin: 2% 4%;
+}
+
+.boxdetails1 {
+    background-color: #2a9aa594;
+    padding: 5px 0 55px 5px;
+    width: 90%;
+    height: 65px;
+    border: springgreen 1px solid;
+    margin: 2% 4%;
+}
+
+#clickme {
+    position: absolute;
+    left: 0px;
+    top: 50px;
+    width: 100px;
+    height: 25px;
+    background-color: white;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 7px;
+    border: rgb(119, 65, 189) 3px solid;
+    border-radius: 5px;
+    cursor: crosshair;
+    
+
+}
+.clickme{
+    animation: myAnimation 2s infinite linear;
+}
+
+
+
+@keyframes myAnimation {
+    from {
+        transform: rotate(0deg);
+}
+to {
+        transform: rotate(359deg);
+}
+}
+
+.father {
+    position: relative;
+}
+
+.child{
+    position: absolute;
+    display: none;
+    font-size: 14px;
+    background-color: white;
+    border: orangered 1px solid;
+    left: 110px;
+    bottom: -1px;
+    padding: 1px 5px;
+}
+.father:hover .child{
+    display: block;
+}
