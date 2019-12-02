@@ -16,7 +16,9 @@ const gameElement = {
     bPoint: 0,
     clickim: 10,
     hovclick: 300,
-    stopGame: 0
+    stopGame: 0,
+    spinTime: 2,
+    sc: 10
 };
 
 var time = null;
@@ -35,7 +37,6 @@ function createHtml() {
     toAppend = "";
     domElement.scorjson = JSON.stringify(highScores);
     localStorage.setItem("theScorer", domElement.scorjson);
-
     highScores.forEach(function (highScores, i) {
         var newPlayer = `<div id="player${i + 1}" class="relative father">${[i + 1]}. ${highScores.name}: ${highScores.score}.<span class="child">${highScores.date} </span> </div>`;
         toAppend += newPlayer;
@@ -49,11 +50,10 @@ function start() {
         timer()
         startBtn.removeEventListener("click", start);
         domElement.clickme.addEventListener("click", myFunc);
-        domElement.clickme.className = "clickme";
+        domElement.clickme.style.animationDuration = "2s";
         domElement.clickme.addEventListener("click", goodPoints);
         domElement.screen.addEventListener("click", bedPoints);
-        // domElement.clickme.addEventListener("mouseover", random);
-
+        domElement.clickme.addEventListener("mouseover", random);
     }
 }
 
@@ -62,26 +62,21 @@ function myFunc(e) {
 }
 
 function timer() {
-    sc = 10;
     domElement.timer.innerHTML = 60;
-    var time = setInterval(function () {
-        if (sc <= 11) {
+    time = setInterval(function () {
+        if (gameElement.sc <= 11) {
             domElement.timer.style.color = "red";
         }
-        if (sc <= 1) {
+        if (gameElement.sc <= 1) {
             domElement.timer.style.color = "black";
         }
-        sc--;
-        if (sc == 0) {
-            sc = 0;
-            clearInterval(time);
+        gameElement.sc--;
+        if (gameElement.sc == 0) {
             domElement.timer.style.color = "black";
-            setTimeout(function () {
-                gameOver();
-            }, 1000)
+            gameOver();
         }
 
-        domElement.timer.innerHTML = sc;
+        domElement.timer.innerHTML = gameElement.sc;
     }, 1000);
 }
 
@@ -100,43 +95,31 @@ function goodPoints() {
     domElement.next.innerHTML = gameElement.clickim;
     gameElement.stopGame++;
     if (gameElement.stopGame == 50) {
-        gameElement.stopGame = 0;
-        clearInterval(time);
-        console.log(1)
+        gameOver();
         domElement.clickme.removeEventListener("click", goodPoints);
         domElement.screen.removeEventListener("click", bedPoints);
         domElement.level.innerHTML = 5;
         domElement.next.innerHTML = 0;
-        gameOver();
     } else {
-
         if (gameElement.clickim == 0) {
-            gameElement.numlevel++;
-            sc += 10;
-            domElement.hovclick -= 50;
-            domElement.level.innerHTML = gameElement.numlevel;
-            gameElement.clickim = 10;
-            domElement.next.innerHTML = gameElement.clickim;
+            nextLevel()
         }
-        if (sc >= 10) {
+        if (gameElement.sc >= 10) {
             domElement.timer.style.color = "black";
-        }
-        if (gameElement.numlevel == 2) {
-            domElement.clickme.style.animation = "myAnimation 1.75s infinite linear";
-        }
-        if (gameElement.numlevel == 3) {
-            domElement.clickme.style.animation = "myAnimation 1.5s infinite linear";
-        }
-        if (gameElement.numlevel == 4) {
-            domElement.clickme.style.animation = "myAnimation 1.25s infinite linear";
-        }
-        if (gameElement.numlevel == 5) {
-            domElement.clickme.style.animation = "myAnimation 1s infinite linear";
-
         }
     }
 }
 
+function nextLevel() {
+    gameElement.spinTime -= 0.25;
+    domElement.clickme.style.animationDuration = gameElement.spinTime + "s";
+    gameElement.numlevel++;
+    gameElement.sc += 10;
+    domElement.hovclick -= 50;
+    domElement.level.innerHTML = gameElement.numlevel;
+    gameElement.clickim = 10;
+    domElement.next.innerHTML = gameElement.clickim;
+}
 
 function bedPoints() {
     gameElement.gPoints -= 1 * gameElement.numlevel;
@@ -154,6 +137,7 @@ function random() {
 }
 
 function newGame() {
+    gameElement.sc = 60;
     gameElement.stopGame = 0;
     gameElement.gPoints = 0;
     gameElement.clickim = 10;
@@ -170,25 +154,21 @@ function newGame() {
 }
 
 function gameOver() {
-    domElement.clickme.className = "";
+    domElement.clickme.style.animationDuration = "0s";
     startBtn.addEventListener("click", start);
-    console.log(2)
-
+    clearInterval(time);
     setTimeout(function () {
         alert("your score is: " + gameElement.gPoints + ".");
-    }, 1000);
-
+    }, 500);
     var list = highScores.length;
     var length = highScores[highScores.length - 1];
     if (list < 5 || gameElement.gPoints > length.score) {
-        setTimeout(function () {
-            pushplayer();
-        }, 1100);
+        pushplayer();
     } else {
         setTimeout(function () {
             alert("try again");
             newGame();
-        }, 1100);
+        }, 500);
     }
 }
 
