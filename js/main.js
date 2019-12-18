@@ -59,7 +59,7 @@ function start() {
         domElement.clickme.addEventListener("click", goodPoints);
         domElement.screen.addEventListener("click", bedPoints);
         domElement.clickme.style.animationDuration = "2s";
-        // domElement.clickme.addEventListener("mouseover", random);
+        domElement.clickme.addEventListener("mouseover", random);
     }
 }
 
