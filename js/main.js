@@ -18,7 +18,7 @@ const gameElement = {
     hovclick: 300,
     stopGame: 0,
     spinTime: 2,
-    sc: 10
+    sc: 60
 };
 
 var time = null;
@@ -38,7 +38,12 @@ function createHtml() {
     domElement.scorjson = JSON.stringify(highScores);
     localStorage.setItem("theScorer", domElement.scorjson);
     highScores.forEach(function (highScores, i) {
-        var newPlayer = `<div id="player${i + 1}" class="relative father">${[i + 1]}. ${highScores.name}: ${highScores.score}.<span class="child">${highScores.date} </span> </div>`;
+        var newPlayer = "";
+        if (highScores.score > 0) {
+            newPlayer = `<div id="player${i + 1}" class="relative father")>${[i + 1]}. ${highScores.name}  ${highScores.score}.<span class="child">${highScores.date} </span> </div>`;
+        } else {
+            newPlayer = `<div id="player${i + 1}" class="relative">${[i + 1]}. ${highScores.name}  ${highScores.score}.<span class="child">${highScores.date} </span> </div>`;
+        }
         toAppend += newPlayer;
         domElement.playerDiv.innerHTML = toAppend;
     });
@@ -50,10 +55,11 @@ function start() {
         timer()
         startBtn.removeEventListener("click", start);
         domElement.clickme.addEventListener("click", myFunc);
-        domElement.clickme.style.animationDuration = "2s";
+        domElement.clickme.className = ("clickme");
         domElement.clickme.addEventListener("click", goodPoints);
         domElement.screen.addEventListener("click", bedPoints);
-        domElement.clickme.addEventListener("mouseover", random);
+        domElement.clickme.style.animationDuration = "2s";
+        // domElement.clickme.addEventListener("mouseover", random);
     }
 }
 
@@ -111,6 +117,7 @@ function goodPoints() {
 }
 
 function nextLevel() {
+    randomColor();
     gameElement.spinTime -= 0.25;
     domElement.clickme.style.animationDuration = gameElement.spinTime + "s";
     gameElement.numlevel++;
@@ -143,6 +150,8 @@ function newGame() {
     gameElement.clickim = 10;
     gameElement.numlevel = 1;
     gameElement.bPoint = 0;
+    gameElement.stopGame = 0;
+    gameElement.spinTime = 2;
     domElement.point.innerHTML = gameElement.gPoints;
     domElement.next.innerHTML = gameElement.clickim;
     domElement.level.innerHTML = gameElement.numlevel;
@@ -163,7 +172,9 @@ function gameOver() {
     var list = highScores.length;
     var length = highScores[highScores.length - 1];
     if (list < 5 || gameElement.gPoints > length.score) {
-        pushplayer();
+        setTimeout(function () {
+            pushplayer();
+        }, 700);
     } else {
         setTimeout(function () {
             alert("try again");
@@ -177,7 +188,7 @@ function pushplayer() {
     if (newName) {
         var playerDate = date();
         var newPlayer = {
-            name: newName.toLowerCase(),
+            name: newName.toLowerCase() + " :",
             score: gameElement.gPoints,
             date: playerDate
         };
@@ -205,10 +216,43 @@ function sort() {
     createHtml();
 }
 
+function levelStyle() {
+    if (gameElement.numlevel == 2) {
+        domElement.screen.style.style
+        domElement.clickme
+    }
+}
 
+function randomColor() {
+    var a = "#";
+    // var b = "";
+    // var c = "";
+    var b = Math.random() * 166;
+    var c = Math.random() * 166;
+    var x = modoles(b);
+    var z = modoles(c);
+    document.body.style.backgroundColor = (a + x);
+    domElement.clickme.style.backgroundColor = (a + z);
 
+}
 
+function modoles(x) {
+    var b = x % 1;
+    x -= b;
+    var a = x.toString();
+    var v = a.length;
+    if (v <= 2) {
+        // var c = "";
+        c = Math.random() * 9;
+        var d = c % 1;
+        c -= d;
+        a += c;
+        return a;
 
+    } else {
+        return a;
+    }
+}
 
 
 
@@ -218,28 +262,28 @@ function sort() {
 
 
 // var highScores = [{
-//         name: "chanoch",
-//         score: "350",
-//         date: "15/07/1989"
+//         name: "",
+//         score: "",
+//         date: ""
 //     },
 //     {
-//         name: "chanoch",
+//         name: "",
+//         score: "",
+//         date: ""
+//     },
+//     {
+//         name: "",
 //         score: "250",
-//         date: "15/07/1989"
-//     },
-//     {
+//         date: ""
+//     }, {
+//         name: "",
+//         score: "0",
+//         date: ""
+//     }, {
 //         name: "chanoch",
-//         score: "150",
-//         date: "15/07/1989"
-//     },
-//     {
-//         name: "chanoch",
-//         score: "100",
-//         date: "15/07/1989"
-//     },
-//     {
-//         name: "chanoch",
-//         score: "50",
-//         date: "15/07/1989"
+//         score: "0",
+//         date: ""
 //     }
 // ];
+// highScoresJSON = JSON.stringify(highScores);
+// localStorage.setItem("theScorer", highScoresJSON);
